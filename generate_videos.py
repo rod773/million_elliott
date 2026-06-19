@@ -1218,7 +1218,8 @@ def render_module(mod: dict):
     clips.append(img_to_clip(outro, dur, audio_path))
 
     # ── Concatenate & export ─────────────────────────────────────────────
-    out_path = OUTPUT_DIR / f"module_{mid}_{mod['title'].replace(' ','_').replace('/','')[:40]}.mp4"
+    safe_title = re.sub(r'[\\/:*?"<>|]', '', mod['title']).replace(' ', '_')[:40]
+    out_path = OUTPUT_DIR / f"module_{mid}_{safe_title}.mp4"
     print(f"  Concatenating {len(clips)} clips…")
     final = concatenate_videoclips(clips, method="compose")
     print(f"  Writing → {out_path}")
